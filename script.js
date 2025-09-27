@@ -1,3 +1,4 @@
+
 const cloudName = "duklao3sh";             // Replace with your Cloudinary cloud name
 const uploadPreset = "TVshowvela_unsigned";      // Your unsigned preset
 
@@ -37,16 +38,21 @@ function handleFiles(files) {
 function uploadFile(file) {
     const title = file.name.replace(/\.[^/.]+$/, ""); // Remove extension
 
-    // Create upload item with progress bar
+    // Create upload item with circle progress
     const itemDiv = document.createElement("div");
     itemDiv.className = "upload-item";
-    itemDiv.innerHTML = `<strong>${title}</strong>`;
-    const progressContainer = document.createElement("div");
-    progressContainer.className = "progress-bar";
-    const progressFill = document.createElement("div");
-    progressFill.className = "progress-fill";
-    progressContainer.appendChild(progressFill);
-    itemDiv.appendChild(progressContainer);
+
+    const circle = document.createElement("div");
+    circle.className = "progress-circle";
+    const percentSpan = document.createElement("span");
+    percentSpan.textContent = "0%";
+    circle.appendChild(percentSpan);
+
+    const textSpan = document.createElement("span");
+    textSpan.textContent = title;
+
+    itemDiv.appendChild(circle);
+    itemDiv.appendChild(textSpan);
     resultDiv.appendChild(itemDiv);
 
     const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
@@ -60,8 +66,8 @@ function uploadFile(file) {
     // Track progress
     xhr.upload.addEventListener("progress", e => {
         if (e.lengthComputable) {
-            const percent = (e.loaded / e.total) * 100;
-            progressFill.style.width = percent + "%";
+            const percent = Math.round((e.loaded / e.total) * 100);
+            percentSpan.textContent = percent + "%";
         }
     });
 
@@ -71,19 +77,23 @@ function uploadFile(file) {
             const link = data.secure_url;
             uploadedData.push({ title, link });
 
+            circle.classList.add("done");
+            percentSpan.textContent = "✔";
+
             const a = document.createElement("a");
             a.href = link;
             a.target = "_blank";
-            a.innerText = link;
-            itemDiv.appendChild(document.createElement("br"));
+            a.innerText = "View";
             itemDiv.appendChild(a);
         } else {
-            itemDiv.innerHTML += `<br>❌ Upload failed`;
+            circle.classList.add("error");
+            percentSpan.textContent = "✖";
         }
     };
 
     xhr.onerror = () => {
-        itemDiv.innerHTML += `<br>❌ Upload error`;
+        circle.classList.add("error");
+        percentSpan.textContent = "✖";
     };
 
     xhr.send(formData);
