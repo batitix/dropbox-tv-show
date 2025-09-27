@@ -6,14 +6,41 @@
         body { font-family: sans-serif; margin: 40px; }
         #dropArea { border: 2px dashed #888; padding: 50px; text-align: center; cursor: pointer; }
         #result { margin-top: 20px; white-space: pre-wrap; }
-        .upload-item { margin-bottom: 10px; }
-        .progress-bar {
-            width: 100%; background-color: #f3f3f3; border-radius: 5px; overflow: hidden; margin-top: 5px;
+        .upload-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin-bottom: 12px; 
         }
-        .progress-fill {
-            height: 15px; background-color: #4CAF50; width: 0%;
+        .progress-circle {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            border: 3px solid #ccc;
+            border-top: 3px solid #4CAF50;
+            animation: spin 1s linear infinite;
+            position: relative;
+        }
+        .progress-circle.done {
+            animation: none;
+            border-color: #4CAF50;
+        }
+        .progress-circle.error {
+            animation: none;
+            border-color: red;
+        }
+        .progress-circle span {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 11px;
         }
         button { margin-top: 10px; margin-right: 10px; }
+        a { font-size: 13px; color: #0066cc; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
