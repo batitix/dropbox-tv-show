@@ -1,4 +1,4 @@
-const cloudName = "YOUR_CLOUD_NAME";             // Replace with your Cloudinary cloud name
+const cloudName = "duklao3sh";             // Replace with your Cloudinary cloud name
 const uploadPreset = "TVshowvela_unsigned";      // Your unsigned preset
 const dropArea = document.getElementById("dropArea");
 const fileInput = document.getElementById("fileInput");
